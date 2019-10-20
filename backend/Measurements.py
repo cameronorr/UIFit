@@ -23,6 +23,7 @@ class Measurements:
         self.chest_point = (0, 0)
         self.model = openpose_model.general_pose_model("", mode="MPI")
         self.inchesPerPixel = 0
+        self.hip_width = 0
         self.points = None
 
 
@@ -59,7 +60,7 @@ class Measurements:
         self.right_hip_knee = self.calc.getDistanceInInches(res_points[8], res_points[9])
         self.left_hip_knee = self.calc.getDistanceInInches(res_points[11], res_points[12])
         self.chest_point = res_points[14]
-
+        self.hip_width = self.calc.getDistanceInInches(res_points[8], res_points[11])
         self.hip_ankle_max = self.calc.getDistanceInInches((res_points[8][1]+res_points[11][1])/2,
                                                            max(res_points[10][1], res_points[13][1]))
         #self.model.vis_pose(path, res_points)
@@ -70,3 +71,30 @@ class Measurements:
         self.calc.calculateInchesPerPixel(res_points)
         self.shoulder_width = self.calc.getDistanceInInches(res_points[2], res_points[5])
         #self.model.vis_pose(path, res_points)
+    
+    def getShoulderHip(self):
+        return self.shoulder_hip
+
+    def getShoulderWidth(self):
+        return self.shoulder_width
+
+    def getRightShoulderElbow(self):
+        return self.right_shoulder_elbow
+
+    def getLeftShoulderElbow(self):
+        return self.left_shoulder_elbow
+
+    def getRightElbowWrist(self):
+        return self.right_elbow_wrist
+
+    def getLeftElbowWrist(self):
+        return self.left_elbow_wrist
+
+    def getRightHipAnkle(self):
+        return self.right_hip_ankle
+
+    def getLeftHipAnkle(self):
+        return self.left_hip_ankle
+
+    def getHipWidth(self):
+        return self.hip_width
