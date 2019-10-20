@@ -1,10 +1,11 @@
-from Calculations import Calculations
-import openpose_model
+from calculations import Calculations
+from .openpose_model import *
 import math
 
 class Measurements:
 
-    def __init__(self, H, frontView=None, bentArmsView=None, backView=None):
+    def __init__(self, H, frontView="", bentArmsView="", backView=""):
+
         self.calc = Calculations(H)
         self.shoulder_width = 0
         self.right_shoulder_elbow = 0
@@ -21,14 +22,18 @@ class Measurements:
         self.hip_ankle_max = 0
         self.chest_point = (0, 0)
         self.model = openpose_model.general_pose_model("", mode="MPI")
+        self.inchesPerPixel = 0
+        self.points = None
 
-        if frontView is not None:
+
+        if frontView != "":
             self.__calculateMeasurementsFromFrontView(frontView)
+            self.inchesPerPixel = self.calc.getInchesPerPixel()
 
-        if bentArmsView is not None:
+        if bentArmsView != "":
             self.__calculateMeasurementsFromBentArmsView(bentArmsView)
 
-        if backView is not None:
+        if backView != "":
             self.__calculateMeasurementsFromBackView(backView)
 
     def __calculateMeasurementsFromFrontView(self, path):
@@ -36,6 +41,7 @@ class Measurements:
         self.calc.calculateInchesPerPixel(res_points)
         self.shoulder_hip = self.calc.getDistanceInInches(min(res_points[2][1], res_points[5][1]),
                                                           min(res_points[8][1], res_points[11][1]))
+        self.points = res_points
         #self.model.vis_pose(path, res_points)
 
 

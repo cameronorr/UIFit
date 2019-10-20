@@ -4,7 +4,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import Calculations
+from .calculations import Calculations
 
 class general_pose_model(object):
     def __init__(self, modelpath, mode="BODY25"):

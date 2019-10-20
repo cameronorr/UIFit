@@ -30,3 +30,8 @@ class Calculations:
             return math.sqrt((point1 - point2)**2) * self.inches_pixel
         return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2) * self.inches_pixel
 
+    def getDistance(self, point1, point2):
+        if isinstance(point1, int or float) or isinstance(point2, int or float):
+            return math.sqrt((point1 - point2)**2)
+        return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
