@@ -4,18 +4,15 @@ import 'react-dropdown/style.css';
 import axios from 'axios';
 import image2base64 from 'image-to-base64';
 
-function toBase64(file) {
-  let res;
-  image2base64(file) // you can also to use url
-    .then(response => {
-      res = response;
-      console.log(res);
-    })
-    .catch(error => {
-      console.log(error); //Exepection error....
-    });
-  return res;
-}
+const toBase64 = async file => {
+  try {
+    let res = await image2base64(file);
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 /**
  * - Add state for the photo array
@@ -38,7 +35,6 @@ const Home = () => {
 
   const fileClicked = e => {
     files[count++] = e.target.files[0].name;
-    console.log(files);
   };
 
   const onBChange = e => {
@@ -54,10 +50,12 @@ const Home = () => {
   };
 
   const fileSubmit = () => {
-    console.log(files);
+    console.log(files[0], files[1], files[2]);
     let image1 = toBase64(files[0]);
     let image2 = toBase64(files[1]);
     let image3 = toBase64(files[2]);
+
+    console.log(image1);
 
     const form = {
       img1: image1,
@@ -67,7 +65,7 @@ const Home = () => {
       size: size,
       style: style
     };
-    axios.post('localhost', form);
+    //axios.post('localhost', form);
   };
 
   return (
@@ -95,7 +93,6 @@ const Home = () => {
             onChange={onBChange}
             value={brand}
             placeholder='Select a Brand'
-            style={{ height: '10rem' }}
           />
         </li>
         <li>
