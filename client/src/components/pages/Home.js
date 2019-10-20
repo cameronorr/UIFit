@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import Dropdown from 'react-dropdown';
-import PropTypes from 'prop-types';
 import 'react-dropdown/style.css';
 import axios from 'axios';
+import image2base64 from 'image-to-base64';
 
-const toBase64 = file => {
-  let document = '';
-  let reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function() {
-    document = reader.result;
-  };
-  reader.onerror = function(error) {
-    console.log('Error: ', error);
-  };
-
-  return document;
-};
+function toBase64(file) {
+  let res;
+  image2base64(file) // you can also to use url
+    .then(response => {
+      res = response;
+      console.log(res);
+    })
+    .catch(error => {
+      console.log(error); //Exepection error....
+    });
+  return res;
+}
 
 /**
  * - Add state for the photo array
@@ -24,41 +23,41 @@ const toBase64 = file => {
  * - Change the dropdown state on change
  * - Send
  */
+let files = ['', '', ''];
 const Home = () => {
   const brands = ['Gap', 'Abercrombie', 'Old Navy', 'Roots', 'Forever 21'];
   const sizes = ['XS', 'S', 'M', 'L', 'XL'];
   const genders = ['Men', 'Women'];
 
-  const [files, setFile] = useState([]);
+  let count = 0;
 
+  // const [files, changeFiles] =
   const [brand, changeBrand] = useState('');
   const [size, changeSize] = useState('');
   const [style, changeStyle] = useState('');
 
   const fileClicked = e => {
-    setFile({ ...files, files: e.files[0] });
+    files[count++] = e.target.files[0].name;
+    console.log(files);
   };
 
   const onBChange = e => {
-    changeBrand({ brand: e.target.value });
+    changeBrand({ brand: e.value });
   };
 
   const onSChange = e => {
-    changeSize({ size: e.target.value });
+    changeSize({ size: e.value });
   };
 
   const onStyChange = e => {
-    changeStyle({ style: e.target.value });
+    changeStyle({ style: e.value });
   };
 
   const fileSubmit = () => {
+    console.log(files);
     let image1 = toBase64(files[0]);
     let image2 = toBase64(files[1]);
     let image3 = toBase64(files[2]);
-
-    console.log(image1);
-    console.log(image2);
-    console.log(image3);
 
     const form = {
       img1: image1,
@@ -68,7 +67,7 @@ const Home = () => {
       size: size,
       style: style
     };
-    axios.post('LINK', form);
+    axios.post('localhost', form);
   };
 
   return (
@@ -96,6 +95,7 @@ const Home = () => {
             onChange={onBChange}
             value={brand}
             placeholder='Select a Brand'
+            style={{ height: '10rem' }}
           />
         </li>
         <li>
