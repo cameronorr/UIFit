@@ -8,7 +8,7 @@ const Navbar = ({ title, slogan, icon }) => {
       <h1>
         <i className={icon} /> {title}
       </h1>
-      <h2> - {slogan}</h2>
+      <h2>{slogan}</h2>
     </div>
   );
 };
@@ -19,7 +19,7 @@ Navbar.propTypes = {
 };
 
 Navbar.defaultProps = {
-  title: '',
+  title: 'UIFit',
   slogan: 'The Virtual Fitting Room',
   icon: 'fas fa-person-booth'
 };

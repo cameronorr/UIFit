@@ -2,6 +2,21 @@ import React, { useState } from 'react';
 import Dropdown from 'react-dropdown';
 import PropTypes from 'prop-types';
 import 'react-dropdown/style.css';
+import axios from 'axios';
+
+const toBase64 = file => {
+  let document = '';
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function() {
+    document = reader.result;
+  };
+  reader.onerror = function(error) {
+    console.log('Error: ', error);
+  };
+
+  return document;
+};
 
 /**
  * - Add state for the photo array
@@ -12,27 +27,47 @@ import 'react-dropdown/style.css';
 const Home = () => {
   const brands = ['Gap', 'Abercrombie', 'Old Navy', 'Roots', 'Forever 21'];
   const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+  const genders = ['Men', 'Women'];
 
-  const [file, setFile] = useState({
-    fileArray: []
-  });
+  const [files, setFile] = useState([]);
 
-  const { fileArray } = file;
+  const [brand, changeBrand] = useState('');
+  const [size, changeSize] = useState('');
+  const [style, changeStyle] = useState('');
 
-  const [dropdown, setVal] = useState({
-    brand: '',
-    size: ''
-  });
+  const fileClicked = e => {
+    setFile({ ...files, files: e.files[0] });
+  };
 
-  const { brand, size } = dropdown;
+  const onBChange = e => {
+    changeBrand({ brand: e.target.value });
+  };
 
-  const fileClicked = event => {
-    setFile({ ...fileArray, [e.target.name]: event.target.files[0] });
+  const onSChange = e => {
+    changeSize({ size: e.target.value });
+  };
+
+  const onStyChange = e => {
+    changeStyle({ style: e.target.value });
   };
 
   const fileSubmit = () => {
-    const form = new FormData();
-    form.append('image', state.file, state.file.name);
+    let image1 = toBase64(files[0]);
+    let image2 = toBase64(files[1]);
+    let image3 = toBase64(files[2]);
+
+    console.log(image1);
+    console.log(image2);
+    console.log(image3);
+
+    const form = {
+      img1: image1,
+      img2: image2,
+      img3: image3,
+      brand: brand,
+      size: size,
+      style: style
+    };
     axios.post('LINK', form);
   };
 
@@ -58,17 +93,25 @@ const Home = () => {
         <li>
           <Dropdown
             options={brands}
-            onChange={_onSelect}
-            value={brandsDropdown}
+            onChange={onBChange}
+            value={brand}
             placeholder='Select a Brand'
           />
         </li>
         <li>
           <Dropdown
             options={sizes}
-            onChange={_onSelect}
-            value={sizeDropdown}
+            onChange={onSChange}
+            value={size}
             placeholder='Select a Size'
+          />
+        </li>
+        <li>
+          <Dropdown
+            options={genders}
+            onChange={onStyChange}
+            value={style}
+            placeholder='Select a Style'
           />
         </li>
         <li>
@@ -82,16 +125,6 @@ const Home = () => {
       </ul>
     </div>
   );
-};
-
-Home.propTypes = {
-  brandsDropdown: PropTypes.string,
-  sizeDropdown: PropTypes.string
-};
-
-Home.defaultProps = {
-  brandsDropdown: brands[0],
-  sizeDropdown: sizes[0]
 };
 
 export default Home;

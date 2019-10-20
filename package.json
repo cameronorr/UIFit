@@ -1,0 +1,27 @@
+{
+  "name": "UIFit",
+  "version": "1.0.0",
+  "description": "Virtual Fitting Room",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "clientinstall": "npm install --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cameronorr/UIFit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cameronorr/UIFit/issues"
+  },
+  "homepage": "https://github.com/cameronorr/UIFit#readme",
+  "devDependencies": {
+    "concurrently": "^5.0.0",
+    "nodemon": "^1.19.4"
+  }
+}

@@ -8,14 +8,14 @@ import Home from './components/pages/Home';
 const App = () => {
   return (
     <div className='App'>
-      <Fragment>
-        <Navbar />
-        <div className='container'>
-          <Switch>
+      <Router>
+        <Fragment>
+          <Navbar />
+          <div className='container'>
             <Route exact path='/' component={Home} />
-          </Switch>
-        </div>
-      </Fragment>
+          </div>
+        </Fragment>
+      </Router>
     </div>
   );
 };
