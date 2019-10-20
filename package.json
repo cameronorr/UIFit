@@ -7,6 +7,7 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
+    "dev": "concurrently \"waitress-serve --listen=*:8000 myapp.wsgi:application backend\" \"npm run client\"",
     "clientinstall": "npm install --prefix client"
   },
   "repository": {
@@ -22,6 +23,10 @@
   "homepage": "https://github.com/cameronorr/UIFit#readme",
   "devDependencies": {
     "concurrently": "^5.0.0",
-    "nodemon": "^1.19.4"
+    "falcon": "0.0.0-2",
+    "matplotlib": "^1.0.0",
+    "node-python-opencv": "^1.0.4",
+    "nodemon": "^1.19.4",
+    "numpy": "0.0.1"
   }
 }
