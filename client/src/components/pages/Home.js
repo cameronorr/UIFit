@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import axios from 'axios';
-import image2base64 from 'image-to-base64';
+import base64Img from 'base64-img';
+import newImg from './newImg.png';
 
-const getBase64OfFile = (file, callback) => {
-  const fr = new FileReader();
-  if (typeof callback === 'function') {
-    callback(fr.result.split('base64,')[1]);
-  }
-  fr.readAsDataURL(file);
+const getImgFrom64 = base => {
+  base64Img.img(base, './', 'newImg.png', function(err, filepath) {});
 };
 
 /**
@@ -90,12 +87,14 @@ const Home = () => {
             style: style
           };
           try {
-            const res = await axios.post(
-              'http://10.254.162.232:8000/fit',
-              form,
-              config
-            );
-            console.log(res);
+            // const res = await axios.post(
+            //   'http://10.254.162.232:8000/fit',
+            //   form,
+            //   config
+            // );
+            //console.log(res);
+            //getImgFrom64(res.image);
+            getImgFrom64(image1);
           } catch (error) {
             console.log(error);
           }
@@ -109,19 +108,13 @@ const Home = () => {
       <ul>
         <li>
           {/** Might need to change this to icon */}
-          <div className='far fa-plus-square' onChange={fileClicked}>
-            <input type='file' />
-          </div>
+          <input type='file' onChange={fileClicked} />
         </li>
         <li>
-          <div className='far fa-plus-square' onChange={fileClicked}>
-            <input type='file' />
-          </div>
+          <input type='file' onChange={fileClicked} />
         </li>
         <li>
-          <div className='far fa-plus-square' onChange={fileClicked}>
-            <input type='file' />
-          </div>
+          <input type='file' onChange={fileClicked} />
         </li>
         <li>
           <Dropdown
@@ -153,9 +146,12 @@ const Home = () => {
             value='Submit'
             className='btn btn-primary btn-indent'
             onClick={fileSubmit}
+            style={{ textAlign: '25.5rem' }}
           />
         </li>
       </ul>
+      <h2>How you would look:</h2>
+      <img src={newImg} />
     </div>
   );
 };
