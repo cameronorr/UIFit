@@ -4,14 +4,12 @@ import 'react-dropdown/style.css';
 import axios from 'axios';
 import image2base64 from 'image-to-base64';
 
-const toBase64 = async file => {
-  try {
-    let res = await image2base64(file);
-    console.log(res);
-    return res;
-  } catch (error) {
-    console.log(error);
+const getBase64OfFile = (file, callback) => {
+  const fr = new FileReader();
+  if (typeof callback === 'function') {
+    callback(fr.result.split('base64,')[1]);
   }
+  fr.readAsDataURL(file);
 };
 
 /**
@@ -34,7 +32,7 @@ const Home = () => {
   const [style, changeStyle] = useState('');
 
   const fileClicked = e => {
-    files[count++] = e.target.files[0].name;
+    files[count++] = e.target.files[0];
   };
 
   const onBChange = e => {
@@ -49,23 +47,61 @@ const Home = () => {
     changeStyle({ style: e.value });
   };
 
-  const fileSubmit = () => {
-    console.log(files[0], files[1], files[2]);
-    let image1 = toBase64(files[0]);
-    let image2 = toBase64(files[1]);
-    let image3 = toBase64(files[2]);
+  const fileSubmit = async () => {
+    // console.log(files[0], files[1], files[2]);
+    // let image1 = toBase64(files[0]);
+    // let image2 = toBase64(files[1]);
+    // let image3 = toBase64(files[2]);
 
-    console.log(image1);
+    // console.log(image1);
 
-    const form = {
-      img1: image1,
-      img2: image2,
-      img3: image3,
-      brand: brand,
-      size: size,
-      style: style
+    // console.log(files);
+    // const fd = new FormData();
+    // fd.append('image', files[0], files[0].name);
+    // fd.append('image', files[1], files[1].name);
+    // fd.append('image', files[2], files[2].name);
+    // console.log(fd);
+    var image1, image2, image3;
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     };
-    //axios.post('localhost', form);
+
+    var reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onloadend = function() {
+      image1 = reader.result.replace(/^data:.+;base64,/, '');
+      var reader1 = new FileReader();
+      reader1.readAsDataURL(files[1]);
+      reader1.onloadend = function() {
+        image2 = reader1.result.replace(/^data:.+;base64,/, '');
+        var reader2 = new FileReader();
+        reader2.readAsDataURL(files[0]);
+        reader2.onloadend = async () => {
+          image3 = reader.result.replace(/^data:.+;base64,/, '');
+          const form = {
+            img1: image1,
+            img2: image2,
+            img3: image3,
+            brand: brand,
+            size: size,
+            style: style
+          };
+          try {
+            const res = await axios.post(
+              'http://10.254.162.232:8000/fit',
+              form,
+              config
+            );
+            console.log(res);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+      };
+    };
   };
 
   return (
