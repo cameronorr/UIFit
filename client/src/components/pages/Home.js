@@ -3,12 +3,30 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import axios from 'axios';
 import base64Img from 'base64-img';
-import newImg from './newImg.png';
+import { Link } from 'react-router-dom';
+
+const fs = require('fs');
 
 const getImgFrom64 = base => {
-  base64Img.img(base, './', 'newImg.png', function(err, filepath) {});
-};
+  //let base64String = `data:image/png;base64,${base}`;
+  //var buf = new Buffer(base, 'base64');
+  //let base64Image = base64String.split(';base64,').pop();
 
+  //fs.writeFile('newImg1.png', base64Image, function(err) {
+  //  console.log('File created');
+  //});
+  //Base64ToImage(`data:image/png;base64,${base}`, function(img) {});
+
+  console.log('ok');
+};
+/*
+function Base64ToImage(base64img, callback) {
+  var img = new Image();
+  img.onload = function() {
+    callback(img);
+  };
+  img.src = base64img;
+}*/
 /**
  * - Add state for the photo array
  * - Figure out how to send a photo array to backend
@@ -87,14 +105,19 @@ const Home = () => {
             style: style
           };
           try {
+            // This is the posting
+
             // const res = await axios.post(
             //   'http://10.254.162.232:8000/fit',
             //   form,
             //   config
             // );
-            //console.log(res);
-            //getImgFrom64(res.image);
+            // console.log(res);
+            // getImgFrom64(res.image);
+
             getImgFrom64(image1);
+
+            // overall, fit_description, image
           } catch (error) {
             console.log(error);
           }
@@ -141,17 +164,16 @@ const Home = () => {
           />
         </li>
         <li>
-          <input
-            type='submit'
-            value='Submit'
-            className='btn btn-primary btn-indent'
-            onClick={fileSubmit}
-            style={{ textAlign: '25.5rem' }}
-          />
+          <Link to='/display' onClick={fileSubmit}>
+            <input
+              type='submit'
+              value='Submit'
+              className='btn btn-primary btn-indent'
+              style={{ textAlign: '25.5rem' }}
+            />
+          </Link>
         </li>
       </ul>
-      <h2>How you would look:</h2>
-      <img src={newImg} />
     </div>
   );
 };
